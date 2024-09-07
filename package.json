@@ -1,0 +1,31 @@
+{
+  "name": "template-backend",
+  "version": "1.0.0",
+  "description": "this is a generic template for backend",
+  "main": "app.js",
+  "type": "module",
+  "scripts": {
+    "dev": "nodemon app.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "backend",
+    "node",
+    "mongoDB",
+    "express",
+    "middleware",
+    "controller",
+    "routes"
+  ],
+  "author": "rohan",
+  "license": "ISC",
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.5.3",
+    "nodemon": "^3.1.4",
+    "zod": "^3.23.8"
+  }
+}
