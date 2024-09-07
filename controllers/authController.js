@@ -3,7 +3,7 @@ import { User } from '../models/User.js';
 import { generateToken, hashPassword, validateEmail, validatePassword } from '../utils/Auth.js';
 
 const register = async (req, res) => {
-    const { name, email, username, password, confirmPassword } = req.body;
+    const { name, email, username, password, confirmPassword ,role} = req.body;
 
     if (!name || !username || !password || !confirmPassword || !email) {
         return res.status(403).json({ message: 'Please enter all fields' });
@@ -29,6 +29,7 @@ const register = async (req, res) => {
             email,
             username,
             password: hashedPassword,
+            role
         })
         res.status(201).json("user created successfully, now you can login")
     } catch (error) {

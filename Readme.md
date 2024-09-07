@@ -61,7 +61,7 @@ This is a generic backend template for a blog platform built using **Node.js**, 
 ### Blog Platform Endpoints
 
 - **GET /postsAll** - Retrieve All Blog Posts
-  - **Actions**: Fetches all blog posts, both public and user-specific, based on authentication.
+  - **Actions**: Fetches all blog posts, both public and user-specific, based on authorization(admin/user).
 
 - **GET /posts** - Retrieve Public and User-Specific Blog Posts
   - **Actions**: Fetches all public posts and the authenticated user's private posts.

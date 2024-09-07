@@ -1,19 +1,19 @@
-import { User } from '../models/User.js';
 import { Blog } from '../models/Post.js';
 import { decodeToken } from '../utils/Auth.js';
 
 const fetchAllPosts = async (req, res) => {
-    console.log('fetch all posts');
     try {
         const user = await decodeToken(req);
-        console.log(user);
+        if (user.role === 'admin') {
+            const posts = await Blog.find();
+            return res.json(posts);
+        }
         const posts = await Blog.find({
-            "$or": [
+            $or: [
                 { status: 'public' },
-                { author: user.id }
+                {author: user.id}
             ]
         });
-        console.log(posts);
         res.json(posts);
     } catch (error) {
         res.status(500).json({ message: 'Server Error in fetchAll' });
@@ -21,12 +21,9 @@ const fetchAllPosts = async (req, res) => {
 };
 
 const fetchPost = async (req, res) => {
-    console.log('fetch post');
     try {
         const user = await decodeToken(req);
-        console.log(user);
         const post = await Blog.find({
-            // status: 'public'
             $or: [
                 { status: 'public' },
                 { author: user.id }
@@ -57,7 +54,6 @@ const fetchPostbyId = async (req, res) => {
 
 const createPost = async (req, res) => {
     const { title, content, status } = req.body;
-    console.log(req.body);
     try {
         const user = await decodeToken(req);
         const post = await Blog.create({
