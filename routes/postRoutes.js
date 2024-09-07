@@ -1,6 +1,6 @@
 import express from "express";
 import authmiddleware from "../middlewares/authmiddleware.js";
-import {fetchAllPosts,fetchPost,fetchPostbyId,updatePost,deletePost,createPost } from "../controllers/userController.js";
+import {fetchAllPosts,fetchPost,fetchPostbyId,updatePost,deletePost,createPost } from "../controllers/postController.js";
 const router = express.Router();
 
 router.get("/posts/:id",authmiddleware, fetchPostbyId);

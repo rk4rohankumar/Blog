@@ -1,5 +1,5 @@
-import { User } from '../models/userModel.js';
-import { Blog } from '../models/blogModel.js';
+import { User } from '../models/User.js';
+import { Blog } from '../models/Post.js';
 import { decodeToken } from '../utils/Auth.js';
 
 const fetchAllPosts = async (req, res) => {
@@ -32,10 +32,10 @@ const fetchPost = async (req, res) => {
                 { author: user.id }
             ]
         });
-        if (!post) {return res.status(404).json({ message: 'Post not found' });}
+        if (!post) { return res.status(404).json({ message: 'Post not found' }); }
         res.json(post);
     }
-    catch (error) {res.status(500).json({ message: 'Server Error' });}
+    catch (error) { res.status(500).json({ message: 'Server Error' }); }
 }
 
 const fetchPostbyId = async (req, res) => {
@@ -44,7 +44,7 @@ const fetchPostbyId = async (req, res) => {
         const user = await decodeToken(req);
         if (!post) {
             return res.status(404).json({ message: 'Post not found' });
-        } 
+        }
         if (user.id !== post.author.toString() && post.status === 'private') {
             return res.status(403).json({ message: 'Unauthorized' });
         }
@@ -112,4 +112,4 @@ const deletePost = async (req, res) => {
     }
 }
 
-export { fetchAllPosts, fetchPost, fetchPostbyId, createPost , updatePost, deletePost };
+export { fetchAllPosts, fetchPost, fetchPostbyId, createPost, updatePost, deletePost };

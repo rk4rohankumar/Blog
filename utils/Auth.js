@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
+import zod from 'zod'
 import {jwtSecret} from '../config/config.js';
 
 export const generateToken = (userId) => {
@@ -36,5 +37,34 @@ export const hashPassword = async (password) => {
         return await bcryptjs.hash(password, salt);
     } catch (error) {
         console.error('Hashing Error:', error);
+    }
+}
+
+export const comparePassword = async (password, hashedPassword) => {
+    try {
+        return await bcryptjs.compare(password, hashedPassword);
+    } catch (error) {
+        console.error('Password comparison error:', error);
+        return false;
+    }
+}
+
+export const validateEmail = (email) => {
+    const schema = zod.string().email();
+    try {
+        schema.parse(email);
+        return true;
+    } catch (error) {
+        return false;
+    }
+}
+
+export const validatePassword = (password) => {
+    const schema = zod.string().min(8);
+    try {
+        schema.parse(password);
+        return true;
+    } catch (error) {
+        return false;
     }
 }

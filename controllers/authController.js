@@ -1,12 +1,15 @@
 import bcrypt from 'bcryptjs';
-import { User } from '../models/userModel.js';
-import { generateToken, hashPassword } from '../utils/Auth.js';
+import { User } from '../models/User.js';
+import { generateToken, hashPassword, validateEmail, validatePassword } from '../utils/Auth.js';
 
 const register = async (req, res) => {
     const { name, email, username, password, confirmPassword } = req.body;
 
     if (!name || !username || !password || !confirmPassword || !email) {
         return res.status(403).json({ message: 'Please enter all fields' });
+    }
+    if (!validateEmail(email) || !validatePassword(password)) {
+        return res.status(403).json({ message: 'email or password not allowed' });
     }
     const exist = await User.findOne({
         "$or": [{ username }, { email }]
@@ -29,7 +32,7 @@ const register = async (req, res) => {
         })
         res.status(201).json("user created successfully, now you can login")
     } catch (error) {
-        res.status(500).json({ message: 'User register error',error });
+        res.status(500).json({ message: 'User register error', error });
     }
 };
 

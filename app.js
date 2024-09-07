@@ -2,7 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv';
 import connectDB from './config/database.js';
 import authRoutes from './routes/authRoutes.js';
-import userRoutes from './routes/userRoutes.js';
+import userRoutes from './routes/postRoutes.js';
 import requestCounter from './middlewares/requestCounter.js';
 import rateLimiter from './middlewares/rateLimiter.js';
 import errorCounter from './middlewares/errorCounter.js';

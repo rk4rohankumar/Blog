@@ -1,6 +1,6 @@
 # Blog Platform API
 
-This is a generic backend template for a blog platform built using **Node.js**, **Express**, and **MongoDB**. It includes user authentication (with JWT) and CRUD operations for blog posts. Users can register, log in, and manage blog posts, with public visibility or user-specific restrictions.
+This is a generic backend template for a blog platform built using **Node.js**, **Express**, **MongoDB**, and **Zod** for input validation. It includes user authentication (with JWT) and CRUD operations for blog posts. Users can register, log in, and manage blog posts with public visibility or user-specific restrictions.
 
 ## Table of Contents
 
@@ -17,8 +17,8 @@ This is a generic backend template for a blog platform built using **Node.js**, 
 
 1. Clone the repository:
    ```bash
-   git clone https://github.com/your-repo/blog-platform.git
-   cd blog-platform
+   git clone https://github.com/rk4rohankumar/Blog
+   cd Blog
    ```
 
 2. Install dependencies:
@@ -40,18 +40,19 @@ This is a generic backend template for a blog platform built using **Node.js**, 
 
 ## Features
 
-- **User Authentication**: Register and log in users with secure password hashing using `bcryptjs` and JWT-based authorization.
-- **CRUD Operations**: Create, read, update, and delete blog posts.
-- **Public & Private Posts**: Posts can be publicly visible or restricted to the owner.
-- **Authorization**: Only the authenticated user can edit or delete their posts.
-  
+- **User Authentication**: Secure user registration and login with password hashing using `bcryptjs` and JWT-based authorization.
+- **CRUD Operations**: Users can create, read, update, and delete blog posts.
+- **Public & Private Posts**: Users can publish posts as public or private. Public posts are visible to all, while private posts are restricted to the owner.
+- **Authorization**: Users can only edit or delete their own posts, requiring authentication.
+- **Input Validation with Zod**: Input validation using Zod to ensure proper data structure for both user management and blog post creation.
+
 ## Endpoints
 
 ### User Management Endpoints
 
 - **POST /users/register** - User Registration
   - **Inputs**: `username`, `email`, `password`
-  - **Actions**: Creates a new user account after validating the input. Returns a success message or an error (e.g., email already in use).
+  - **Actions**: Creates a new user account after validating the input using Zod. Returns a success message or an error (e.g., email already in use).
 
 - **POST /users/login** - User Login
   - **Inputs**: `email/username`, `password`
@@ -60,50 +61,53 @@ This is a generic backend template for a blog platform built using **Node.js**, 
 ### Blog Platform Endpoints
 
 - **GET /postsAll** - Retrieve All Blog Posts
-  - **Actions**: Fetches all blog posts, either public or user-specific, based on authentication.
+  - **Actions**: Fetches all blog posts, both public and user-specific, based on authentication.
 
 - **GET /posts** - Retrieve Public and User-Specific Blog Posts
   - **Actions**: Fetches all public posts and the authenticated user's private posts.
 
 - **POST /posts** - Create a New Blog Post
-  - **Inputs**: `title`, `body`
-  - **Actions**: Creates a new blog post associated with the authenticated user. Requires authentication.
+  - **Inputs**: `title`, `body`, `status` (optional)
+  - **Actions**: Creates a new blog post associated with the authenticated user. The input is validated using Zod, and authentication is required.
 
 - **GET /posts/:id** - Retrieve a Single Blog Post by ID
-  - **Actions**: Fetches the details of a specific blog post. Public posts are accessible to all, while private posts are only accessible to the owner.
+  - **Actions**: Fetches the details of a specific blog post. Public posts are accessible to all, while private posts are restricted to the owner.
 
 - **PUT /posts/:id** - Update a Blog Post by ID
   - **Inputs**: `title`, `body`
-  - **Actions**: Updates the specified blog post if the authenticated user is the owner. Requires authentication.
+  - **Actions**: Updates the specified blog post if the authenticated user is the owner. Zod validates the input data. Requires authentication.
 
 - **DELETE /posts/:id** - Delete a Blog Post by ID
   - **Actions**: Deletes the specified blog post if the authenticated user is the owner. Requires authentication.
 
 ## Technologies Used
 
-- **Node.js**: JavaScript runtime
-- **Express**: Web framework
-- **MongoDB**: NoSQL database
-- **JWT (jsonwebtoken)**: Authentication and authorization
-- **bcryptjs**: Password hashing
-- **Mongoose**: MongoDB ORM
-- **dotenv**: Environment variable management
-- **Nodemon**: Development tool for automatic server restarts
+- **Node.js**: JavaScript runtime for backend development.
+- **Express**: Web framework for creating API endpoints.
+- **MongoDB**: NoSQL database for data storage.
+- **Mongoose**: ORM for MongoDB.
+- **JWT (jsonwebtoken)**: For authentication and authorization using JSON Web Tokens.
+- **bcryptjs**: For hashing passwords to enhance security.
+- **Zod**: For schema-based validation of user inputs, ensuring all incoming data is properly structured and secure.
+- **dotenv**: For managing environment variables.
+- **Nodemon**: For automatically restarting the server during development.
 
 ## Project Structure
 
 ```bash
 ├── controllers
+│   ├── authController.js      # Handles user registration and login
 │   ├── postController.js      # Handles blog post-related actions
-│   ├── userController.js      # Handles user registration and login
 ├── middlewares
 │   └── authMiddleware.js      # Middleware for checking authentication via JWT
 ├── models
 │   ├── Post.js                # Post schema
-│   └── User.js                # User schema
+│   └── User.js                # User schema       # Zod schemas for validating inputs
 ├── routes
 │   ├── postRoutes.js          # Blog post routes
 │   └── userRoutes.js          # User management routes
+├── utils
+│   └── Auth.js                # Zod validation schemas for user inputs 
 ├── app.js                     # Main app entry point
 └── .env                       # Environment variables file
 ```
